@@ -14,8 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.BUILD-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>1.5.9.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -44,6 +43,32 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+        
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <exclusions>
+              <exclusion>
+                <artifactId>xml-apis</artifactId>
+                <groupId>xml-apis</groupId>
+              </exclusion>
+            </exclusions>
+        </dependency>
+        
 	</dependencies>
 
 	<build>
