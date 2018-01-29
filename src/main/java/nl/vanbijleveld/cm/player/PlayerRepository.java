@@ -1,10 +1,11 @@
 package nl.vanbijleveld.cm.player;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import nl.vanbijleveld.cm.player.PlayerEnt;
 
-@Repository
-public interface PlayerRepository extends JpaRepository<PlayerEnt, Long> {
+
+public interface PlayerRepository extends CrudRepository<PlayerEnt, Long> {
 
     PlayerEnt findOneById(long id);
 
