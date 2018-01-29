@@ -10,8 +10,7 @@ target/
 .springBeans
 
 ## ENV ##
-
-src/main/resources/application.properties
+src/main/resources/env.properties
 
 ### IntelliJ IDEA ###
 .idea
