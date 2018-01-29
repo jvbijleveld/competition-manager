@@ -2,7 +2,9 @@ package nl.vanbijleveld.cm.mock;
 
 import nl.vanbijleveld.cm.player.EnumSex;
 import nl.vanbijleveld.cm.player.PlayerEnt;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PlayerRepositoryMock {
 
     private final PlayerEnt player = new PlayerEnt();

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 public class PlayerEnt {
 
     @Id
+    @Column(name = "id")
     private long id;
 
     @Column(name = "firstname")
