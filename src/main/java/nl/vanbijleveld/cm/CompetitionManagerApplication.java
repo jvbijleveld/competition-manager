@@ -2,6 +2,8 @@ package nl.vanbijleveld.cm;
 
 import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerService;
+import nl.vanbijleveld.cm.team.Team;
+import nl.vanbijleveld.cm.team.TeamService;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class CompetitionManagerApplication {
     @Autowired
     PlayerService playerService;
 
+    @Autowired
+    TeamService teamService;
+
+
     @RequestMapping(value = "/")
     public String index() {
         return "Hello all";
@@ -40,6 +46,13 @@ public class CompetitionManagerApplication {
     public Player showPlayer(@PathVariable long id) throws NotFoundException {
     	System.out.println("Looking for player " + id);
       	return playerService.getPlayer(id);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/team/{id}")
+    public Team showTeam(@PathVariable long id) throws NotFoundException {
+    	System.out.println("Looking for team " + id);
+      	return teamService.getTeam(id);
     }
 
     public static void main(String[] args) {
