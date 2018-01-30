@@ -76,12 +76,4 @@ public class PlayerEnt {
         this.email = email;
     }
 
-    public String getFullName() {
-        return this.firstName + ((!this.infix.isEmpty()) ? this.infix + " " : " ") + this.lastName;
-    }
-
-    public String getFullSalutation() {
-        return ((!this.sex.getSalutation().isEmpty()) ? this.sex.getSalutation() + " " : "") + getFullName();
-    }
-
 }
