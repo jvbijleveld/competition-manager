@@ -5,6 +5,10 @@ import nl.vanbijleveld.cm.player.PlayerService;
 import nl.vanbijleveld.cm.team.Team;
 import nl.vanbijleveld.cm.team.TeamService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.lang.invoke.MethodHandles;
+
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -23,13 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SpringBootApplication
 public class CompetitionManagerApplication {
+    private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     PlayerService playerService;
 
     @Autowired
     TeamService teamService;
-
 
     @RequestMapping(value = "/")
     public String index() {
@@ -44,14 +48,14 @@ public class CompetitionManagerApplication {
     @ResponseBody
     @RequestMapping(value = "/player/{id}")
     public Player showPlayer(@PathVariable long id) throws NotFoundException {
-    	System.out.println("Looking for player " + id);
+    	LOGGER.info("Looking for player " + id);
       	return playerService.getPlayer(id);
     }
     
     @ResponseBody
     @RequestMapping(value = "/team/{id}")
     public Team showTeam(@PathVariable long id) throws NotFoundException {
-    	System.out.println("Looking for team " + id);
+    	LOGGER.info("Looking for team " + id);
       	return teamService.getTeam(id);
     }
 
