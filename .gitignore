@@ -12,6 +12,9 @@ target/
 ## ENV ##
 src/main/resources/env.properties
 
+## LOGS ##
+logs/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
