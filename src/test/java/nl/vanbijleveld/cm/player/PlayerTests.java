@@ -34,11 +34,6 @@ public class PlayerTests {
     }
 
     @Test
-    public void persistToDb() {
-        playerRepo.save(mockPlayerEnt);
-    }
-
-    @Test
     public void testPlayerFactory() {
         mockPlayer = PlayerFactory.build(mockPlayerEnt);
 

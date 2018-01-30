@@ -9,10 +9,11 @@ import nl.vanbijleveld.cm.player.PlayerService;
 import nl.vanbijleveld.cm.team.Team;
 import nl.vanbijleveld.cm.team.TeamService;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,14 +25,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(CompetitionManagerApplication.class)
 public class CompetitionManagerApplicationTests {
 
+    private Player mockPlayer;
+    private Team mockTeam;
+
     @Autowired
     private MockMvc mvc;
-
-    @Mock
-    private Player mockPlayer;
-
-    @Mock
-    private Team mockTeam;
 
     @MockBean
     private PlayerService playerService;
@@ -41,6 +39,19 @@ public class CompetitionManagerApplicationTests {
 
     @InjectMocks
     private CompetitionManagerApplicationTests controller;
+
+    @Before
+    public void setup() {
+        Player mockPlayer = new Player();
+        mockPlayer.setFirstName("firstName");
+        mockPlayer.setLastName("lastname");
+        mockPlayer.setEmail("EMail");
+
+        Team mockTeam = new Team();
+        mockTeam.setId(1);
+        mockTeam.setName("TeamName");
+        mockTeam.setYell("TeamYell");
+    }
 
     @Test
     public void contextLoads() {
@@ -54,14 +65,14 @@ public class CompetitionManagerApplicationTests {
     // PLAYERS
     @Test
     public void findPlayer_returnJson() throws Exception {
-        given(playerService.getPlayer(1l)).willReturn(mockPlayer);
+        given(playerService.getPlayer(Mockito.anyLong())).willReturn(mockPlayer);
         mvc.perform(get("/player/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void findPlayer_returnNotFound() throws Exception {
-        given(playerService.getPlayer(1l)).willThrow(NotFoundException.class);
+        given(playerService.getPlayer(Mockito.anyLong())).willThrow(NotFoundException.class);
         mvc.perform(get("/player/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 

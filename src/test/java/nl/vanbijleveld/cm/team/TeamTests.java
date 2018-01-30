@@ -52,11 +52,6 @@ public class TeamTests {
     }
 
     @Test
-    public void persistToDb() {
-        teamRepo.save(mockTeamEnt);
-    }
-
-    @Test
     public void testTeamFactory() {
         mockTeam = TeamFactory.build(mockTeamEnt);
 
