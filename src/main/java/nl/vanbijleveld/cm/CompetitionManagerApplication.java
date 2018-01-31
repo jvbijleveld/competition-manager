@@ -21,6 +21,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @PropertySource({"classpath:env.properties"})
@@ -35,25 +38,42 @@ public class CompetitionManagerApplication {
     @Autowired
     TeamService teamService;
 
-    @RequestMapping(value = "/")
+    @GetMapping(value = "/")
     public String index() {
         return "Hello all";
     }
     
+//Default ErrorHandling
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleGeneralException(final NotFoundException exception, final HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGeneralException(final Exception exception, final HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    
+    
+//Players
     @ResponseBody
-    @RequestMapping(value = "/player/{id}")
+    @GetMapping(value = "/player/{id}")
     public Player showPlayer(@PathVariable long id) throws NotFoundException {
     	LOGGER.info("Looking for player " + id);
       	return playerService.getPlayer(id);
     }
     
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping(value="/player")
+    public Player addNewPlayer(@ModelAttribute Player request){
+        LOGGER.info("Creating new Player");
+        playerService.createNewPlayer(Player);
+    }
+    
+    
+//Teams    
     @ResponseBody
-    @RequestMapping(value = "/team/{id}")
+    @GetMapping(value = "/team/{id}")
     public Team showTeam(@PathVariable long id) throws NotFoundException {
     	LOGGER.info("Looking for team " + id);
       	return teamService.getTeam(id);

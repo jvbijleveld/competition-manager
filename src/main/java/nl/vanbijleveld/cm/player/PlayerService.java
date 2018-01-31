@@ -25,4 +25,12 @@ public class PlayerService {
         return PlayerFactory.build(ent);
     }
 
+    public void createNewPlayer(Player newPlayer){
+        PlayerEnt existingPlayer = playerRepo.findOneByEmail(newPlayer.getEmail());
+        
+        if(existingPlayer){ throw new Exception("Player already exists"); }
+        
+        playerRepo.save(PlayerEntWrapper.wrap(newPlayer));
+    }
+    
 }
