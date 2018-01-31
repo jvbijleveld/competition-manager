@@ -1,10 +1,9 @@
 package nl.vanbijleveld.cm.player;
 
-
 public class PlayerEntWrapper {
-    
+
     public static PlayerEnt wrap(Player player) {
-        Player playerEnt = new PlayerEnt();
+        PlayerEnt playerEnt = new PlayerEnt();
 
         playerEnt.setEmail(player.getEmail());
         playerEnt.setFirstName(player.getFirstName());
@@ -15,6 +14,4 @@ public class PlayerEntWrapper {
         return playerEnt;
     }
 
-    
 }
-

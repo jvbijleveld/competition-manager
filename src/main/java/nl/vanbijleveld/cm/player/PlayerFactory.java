@@ -1,17 +1,21 @@
 package nl.vanbijleveld.cm.player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerFactory {
 
     public static Player build(PlayerEnt entity) {
-        Player player = new Player();
+        return new Player(entity.getFirstName(), entity.getInfix(), entity.getLastName(), entity.getEmail(), entity.getSex());
+    }
 
-        player.setEmail(entity.getEmail());
-        player.setFirstName(entity.getFirstName());
-        player.setInfix(entity.getInfix());
-        player.setLastName(entity.getLastName());
-        player.setSex(entity.getSex());
+    public static List<Player> build(List<PlayerEnt> players) {
+        List<Player> list = new ArrayList<Player>();
 
-        return player;
+        for (PlayerEnt player : players) {
+            list.add(build(player));
+        }
+        return list;
     }
 
 }

@@ -1,5 +1,12 @@
 package nl.vanbijleveld.cm;
 
+import java.lang.invoke.MethodHandles;
+
+import javassist.NotFoundException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import nl.vanbijleveld.cm.exception.ConflictException;
 import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerService;
 import nl.vanbijleveld.cm.team.Team;
@@ -7,23 +14,19 @@ import nl.vanbijleveld.cm.team.TeamService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.lang.invoke.MethodHandles;
-
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @PropertySource({"classpath:env.properties"})
@@ -42,41 +45,39 @@ public class CompetitionManagerApplication {
     public String index() {
         return "Hello all";
     }
-    
-//Default ErrorHandling
+
+    // Default ErrorHandling
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleGeneralException(final NotFoundException exception, final HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-    
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGeneralException(final Exception exception, final HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> handleGeneralException(final ConflictException exception, final HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
     }
-    
-    
-//Players
+
+    // Players
     @ResponseBody
     @GetMapping(value = "/player/{id}")
     public Player showPlayer(@PathVariable long id) throws NotFoundException {
-    	LOGGER.info("Looking for player " + id);
-      	return playerService.getPlayer(id);
+        LOGGER.info("Looking for player " + id);
+        return playerService.getPlayer(id);
     }
-    
+
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping(value="/player")
-    public Player addNewPlayer(@ModelAttribute Player request){
+    @PutMapping(value = "/player")
+    public void addNewPlayer(@ModelAttribute Player request) throws ConflictException {
         LOGGER.info("Creating new Player");
-        playerService.createNewPlayer(Player);
+        playerService.createNewPlayer(request);
     }
-    
-    
-//Teams    
+
+    // Teams
     @ResponseBody
     @GetMapping(value = "/team/{id}")
     public Team showTeam(@PathVariable long id) throws NotFoundException {
-    	LOGGER.info("Looking for team " + id);
-      	return teamService.getTeam(id);
+        LOGGER.info("Looking for team " + id);
+        return teamService.getTeam(id);
     }
 
     public static void main(String[] args) {

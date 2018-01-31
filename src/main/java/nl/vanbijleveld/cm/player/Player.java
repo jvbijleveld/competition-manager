@@ -11,6 +11,30 @@ public class Player implements Serializable {
     private EnumSex sex;
     private String email;
 
+    public Player(String firstName, String infix, String lastName, String email, EnumSex sex) {
+        this.firstName = firstName;
+        this.infix = infix;
+        this.lastName = lastName;
+        this.email = email;
+        this.sex = sex;
+    }
+
+    public Player(String firstName, String infix, String lastName, String email) {
+        this.firstName = firstName;
+        this.infix = infix;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public Player(String firstName, String infix, String lastName) {
+        this.firstName = firstName;
+        this.infix = infix;
+        this.lastName = lastName;
+    }
+
+    public Player() {
+    }
+
     public String getFirstName() {
         return firstName;
     }

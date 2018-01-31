@@ -10,8 +10,10 @@ public class TeamFactory {
         team.setName(entity.getName());
         team.setYell(entity.getYell());
 
-        for (TeamMembersEnt member : entity.getMembers()) {
-            team.addPlayer(PlayerFactory.build(member.getPlayer()));
+        if (entity.getMembers() != null) {
+            for (TeamMembersEnt member : entity.getMembers()) {
+                team.addPlayer(PlayerFactory.build(member.getPlayer()));
+            }
         }
         return team;
     }

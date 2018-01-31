@@ -1,5 +1,6 @@
 package nl.vanbijleveld.cm.team;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -51,6 +52,13 @@ public class TeamEnt {
 
     public List<TeamMembersEnt> getMembers() {
         return this.members;
+    }
+
+    public void addMember(TeamMembersEnt newMember) {
+        if (this.members == null) {
+            this.members = new ArrayList<TeamMembersEnt>();
+        }
+        this.members.add(newMember);
     }
 
     public void setMembers(List<TeamMembersEnt> list) {

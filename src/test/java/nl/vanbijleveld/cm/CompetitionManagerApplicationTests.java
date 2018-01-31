@@ -2,8 +2,10 @@ package nl.vanbijleveld.cm;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.player.EnumSex;
 import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerService;
 import nl.vanbijleveld.cm.team.Team;
@@ -21,6 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @RunWith(SpringRunner.class)
 @WebMvcTest(CompetitionManagerApplication.class)
 public class CompetitionManagerApplicationTests {
@@ -30,6 +34,9 @@ public class CompetitionManagerApplicationTests {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private PlayerService playerService;
@@ -42,10 +49,7 @@ public class CompetitionManagerApplicationTests {
 
     @Before
     public void setup() {
-        Player mockPlayer = new Player();
-        mockPlayer.setFirstName("firstName");
-        mockPlayer.setLastName("lastname");
-        mockPlayer.setEmail("EMail");
+        mockPlayer = new Player("firstName", "", "lastname", "EMail", EnumSex.MALE);
 
         Team mockTeam = new Team();
         mockTeam.setId(1);
@@ -74,6 +78,11 @@ public class CompetitionManagerApplicationTests {
     public void findPlayer_returnNotFound() throws Exception {
         given(playerService.getPlayer(Mockito.anyLong())).willThrow(NotFoundException.class);
         mvc.perform(get("/player/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void createNewPlayer() throws Exception {
+        mvc.perform(put("/player").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockPlayer))).andExpect(status().isCreated());
     }
 
     // TEAMS

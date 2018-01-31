@@ -8,5 +8,4 @@ public interface TeamRepository extends CrudRepository<TeamEnt, Long> {
 
     TeamEnt findOneById(long id);
 
-
 }

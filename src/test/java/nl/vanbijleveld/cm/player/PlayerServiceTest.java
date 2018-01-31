@@ -1,9 +1,11 @@
 package nl.vanbijleveld.cm.player;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.exception.ConflictException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class PlayerServiceTest {
 
+    private Player mockPlayer;
+
     @Mock
     private PlayerRepository playerRepo;
 
@@ -29,7 +33,13 @@ public class PlayerServiceTest {
 
     @Before
     public void setup() {
-
+        mockPlayer = new Player("first", "", "last", "email", EnumSex.MALE);
+        mockPlayerEnt = new PlayerEnt();
+        mockPlayerEnt.setFirstName("first");
+        mockPlayerEnt.setInfix("");
+        mockPlayerEnt.setLastName("last");
+        mockPlayerEnt.setEmail("email");
+        mockPlayerEnt.setSex(EnumSex.MALE);
     }
 
     @Test
@@ -39,11 +49,29 @@ public class PlayerServiceTest {
         assertNotNull(player);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = NotFoundException.class)
     public void getPlayerNotFoundTest() throws NotFoundException {
         when(playerRepo.findOneById(Matchers.anyLong())).thenReturn(null);
         final Player player = playerService.getPlayer(1l);
+        assertNull(player);
+    }
+
+    @Test
+    public void testCreatePlayer() throws ConflictException {
+        when(playerRepo.findOneByEmail(Matchers.anyString())).thenReturn(null);
+        when(playerRepo.save(Matchers.any(PlayerEnt.class))).thenReturn(mockPlayerEnt);
+        final Player player = playerService.createNewPlayer(mockPlayer);
+        assertEquals(mockPlayer.getFirstName(), player.getFirstName());
+        assertEquals(mockPlayer.getInfix(), player.getInfix());
+        assertEquals(mockPlayer.getLastName(), player.getLastName());
+        assertEquals(mockPlayer.getEmail(), player.getEmail());
+        assertEquals(mockPlayer.getSex(), player.getSex());
+    }
+
+    @Test(expected = ConflictException.class)
+    public void testCreateDuplicatePlayer() throws ConflictException {
+        when(playerRepo.findOneByEmail(Matchers.anyString())).thenReturn(mockPlayerEnt);
+        final Player player = playerService.createNewPlayer(mockPlayer);
         assertNull(player);
     }
 

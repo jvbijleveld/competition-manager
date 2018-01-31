@@ -1,11 +1,12 @@
 package nl.vanbijleveld.cm.player;
 
-import javassist.NotFoundException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.lang.invoke.MethodHandles;
 
-import nl.vanbijleveld.cm.player.PlayerRepository;
+import javassist.NotFoundException;
+import nl.vanbijleveld.cm.exception.ConflictException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +17,23 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepo;
 
-    public Player getPlayer(long id) throws NotFoundException{
+    public Player getPlayer(long id) throws NotFoundException {
         PlayerEnt ent = playerRepo.findOneById(id);
-        if(ent == null){
+        if (ent == null) {
             LOGGER.error("Player with id " + id + " is not found");
             throw new NotFoundException("Player with id " + id + " is not found");
         }
         return PlayerFactory.build(ent);
     }
 
-    public void createNewPlayer(Player newPlayer){
+    public Player createNewPlayer(Player newPlayer) throws ConflictException {
         PlayerEnt existingPlayer = playerRepo.findOneByEmail(newPlayer.getEmail());
-        
-        if(existingPlayer){ throw new Exception("Player already exists"); }
-        
-        playerRepo.save(PlayerEntWrapper.wrap(newPlayer));
+
+        if (existingPlayer != null) {
+            throw new ConflictException("Player already exists");
+        }
+
+        return PlayerFactory.build(playerRepo.save(PlayerEntWrapper.wrap(newPlayer)));
     }
-    
+
 }
