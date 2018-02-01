@@ -5,6 +5,7 @@ public class PlayerEntWrapper {
     public static PlayerEnt wrap(Player player) {
         PlayerEnt playerEnt = new PlayerEnt();
 
+        playerEnt.setId(player.getId());
         playerEnt.setEmail(player.getEmail());
         playerEnt.setFirstName(player.getFirstName());
         playerEnt.setInfix(player.getInfix());

@@ -6,7 +6,9 @@ import java.util.List;
 public class PlayerFactory {
 
     public static Player build(PlayerEnt entity) {
-        return new Player(entity.getFirstName(), entity.getInfix(), entity.getLastName(), entity.getEmail(), entity.getSex());
+        Player newPlayer = new Player(entity.getFirstName(), entity.getInfix(), entity.getLastName(), entity.getEmail(), entity.getSex());
+        newPlayer.setId(entity.getId());
+        return newPlayer;
     }
 
     public static List<Player> build(List<PlayerEnt> players) {

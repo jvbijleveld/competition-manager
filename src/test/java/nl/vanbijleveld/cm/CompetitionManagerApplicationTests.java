@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -106,5 +107,35 @@ public class CompetitionManagerApplicationTests {
         given(teamService.getTeam(1l)).willThrow(NotFoundException.class);
         mvc.perform(get("/team/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
+    
+    @Test
+    public void createTeam() throws Exception {
+    	given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
+        mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockTeam))).andExpect(status().isCreated());
+    }
+    
+    @Test
+    public void addPlayerToTeam() throws Exception {
+    	given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
+    	given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
+        mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Test
+    public void addPlayerNotFoundToTeam() throws Exception {
+    	given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
+    	given(playerService.getPlayer(Matchers.anyLong())).willThrow(NotFoundException.class);
+        mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Test
+    public void addPlayerToTeamNotFound() throws Exception {
+    	given(teamService.getTeam(Matchers.anyLong())).willThrow(NotFoundException.class);
+    	given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
+        mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+    
 
 }

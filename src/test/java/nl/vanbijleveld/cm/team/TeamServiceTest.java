@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerEnt;
+import nl.vanbijleveld.cm.player.PlayerFactory;
+import nl.vanbijleveld.cm.player.PlayerService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +29,14 @@ public class TeamServiceTest {
 
     private List<PlayerEnt> mockPlayers;
     private PlayerEnt mockPlayerEnt;
+    private Player mockPlayer;
     private TeamEnt mockTeamEnt;
 
     @Mock
     private TeamRepository teamRepo;
+    
+    @Mock
+    private PlayerService playerService;
 
     @InjectMocks
     private TeamService teamService;
@@ -42,6 +49,8 @@ public class TeamServiceTest {
         mockPlayerEnt.setInfix("infix");
         mockPlayerEnt.setLastName("lastName");
         mockPlayerEnt.setEmail("email");
+        
+        mockPlayer = PlayerFactory.build(mockPlayerEnt);
 
         mockPlayers = new ArrayList<PlayerEnt>();
         mockPlayers.add(mockPlayerEnt);
@@ -90,5 +99,15 @@ public class TeamServiceTest {
         assertEquals("teamName", team.getName());
         assertEquals("Yell", team.getYell());
         assertEquals(team.getPlayers().size(), mockPlayers.size());
+    }
+    
+    @Test
+    public void addPlayerTest() throws NotFoundException{
+    	when(teamRepo.findOneById(Matchers.anyLong())).thenReturn(mockTeamEnt);
+    	when(playerService.getPlayer(Matchers.anyLong())).thenReturn(mockPlayer);
+    	int expectedTeamSize = mockTeamEnt.getMembers().size() +1;
+    	Team team = teamService.addPlayer(1l, 1l);
+    	
+    	assertEquals(team.getPlayers().size(), expectedTeamSize);
     }
 }

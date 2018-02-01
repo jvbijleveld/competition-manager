@@ -25,7 +25,7 @@ public class TeamEnt {
     @Column(name = "yell")
     private String yell;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<TeamMembersEnt> members;
 
     public long getId() {

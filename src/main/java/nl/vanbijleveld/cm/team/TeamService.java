@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerEnt;
+import nl.vanbijleveld.cm.player.PlayerEntWrapper;
+import nl.vanbijleveld.cm.player.PlayerService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,25 +21,43 @@ public class TeamService {
 
     @Autowired
     private TeamRepository teamRepo;
+    
+    @Autowired
+    private PlayerService playerService;
 
     public Team getTeam(long id) throws NotFoundException {
-        TeamEnt ent = teamRepo.findOneById(id);
+        return TeamFactory.build(fetchTeam(id));
+    }
+    
+    private TeamEnt fetchTeam(long id) throws NotFoundException{
+    	TeamEnt ent = teamRepo.findOneById(id);
         if (ent == null) {
             LOGGER.error("Team with id " + id + " is not found");
             throw new NotFoundException("Team with id " + id + " is not found");
         }
-        return TeamFactory.build(ent);
+        return ent;
+    }
+    
+    public Team addPlayer(long teamId, long playerId) throws NotFoundException{
+    	TeamEnt team  = fetchTeam(teamId);
+    	Player player = playerService.getPlayer(playerId);
+    	TeamMembersEnt memberEnt = new TeamMembersEnt();
+    	memberEnt.setPlayer(PlayerEntWrapper.wrap(player));
+    	memberEnt.setTeam(team);
+    	team.addMember(memberEnt);
+    	teamRepo.save(team);
+    	return TeamFactory.build(team);
     }
 
+    public Team createTeam(String name, String yell){
+    	TeamEnt newTeam = buildTeam(name, yell);
+    	return TeamFactory.build(teamRepo.save(newTeam));
+    }
+    
     public Team createTeam(String name, String yell, List<PlayerEnt> players) {
-        TeamEnt team = new TeamEnt();
-        team.setName(name);
-        team.setYell(yell);
-
-        team.setMembers(TeamMembersEntFactory.build(players, team));
-
-        return TeamFactory.build(teamRepo.save(team));
-
+    	TeamEnt newTeam = buildTeam(name, yell);
+    	newTeam.setMembers(TeamMembersEntFactory.build(players, newTeam));
+    	return TeamFactory.build(teamRepo.save(newTeam));
     }
     
     public Team createTeam(String name, String yell, PlayerEnt player) {
@@ -45,4 +66,12 @@ public class TeamService {
         return createTeam(name, yell, newList);
     }
 
+    private TeamEnt buildTeam(String name, String yell){
+    	TeamEnt team = new TeamEnt();
+        team.setName(name);
+        team.setYell(yell);
+        
+        return team;
+    }
+   
 }

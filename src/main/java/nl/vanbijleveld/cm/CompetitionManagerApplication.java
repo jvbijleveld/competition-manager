@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,7 +56,6 @@ public class CompetitionManagerApplication {
     }
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<?> handleConflictException(final ConflictException exception, final HttpServletRequest request) {
         LOGGER.error("Returning HTTP Conflict:" + exception.getMessage());
@@ -72,10 +72,11 @@ public class CompetitionManagerApplication {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/player", method = RequestMethod.PUT)
-    public void addNewPlayer(@RequestBody Player request) throws ConflictException {
+    @ResponseBody
+    @PutMapping(value = "/player")
+    public Player addNewPlayer(@RequestBody Player request) throws ConflictException {
         LOGGER.info("Creating new Player");
-        playerService.createNewPlayer(request);
+        return playerService.createNewPlayer(request);
     }
 
     // Teams
@@ -84,6 +85,22 @@ public class CompetitionManagerApplication {
     public Team showTeam(@PathVariable long id) throws NotFoundException {
         LOGGER.info("Looking for team " + id);
         return teamService.getTeam(id);
+    }
+    
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    @PutMapping(value = "/team")
+    public Team createTeam(@RequestBody Team request){
+    	LOGGER.info("Creating new Team");
+    	return teamService.createTeam(request.getName(), request.getYell());
+    }
+    
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    @PutMapping(value = "/team/{teamId}/addPlayer/{playerId}")
+    public Team addPlayerToTeam(@PathVariable Long teamId, @PathVariable Long playerId) throws NotFoundException{
+    	LOGGER.info("Adding player with id {} to team with id {}", playerId, teamId);
+    	return teamService.addPlayer(teamId, playerId);
     }
 
     public static void main(String[] args) {

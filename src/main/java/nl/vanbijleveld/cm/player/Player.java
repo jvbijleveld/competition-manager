@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     private static final long serialVersionUID = 37677839523521096L;
+    private long id;
     private String firstName;
     private String infix;
     private String lastName;
@@ -35,6 +36,14 @@ public class Player implements Serializable {
     public Player() {
     }
 
+    public void setId(long id){
+    	this.id = id;
+    }
+    
+    public long getId(){
+    	return this.id;
+    }
+    
     public String getFirstName() {
         return firstName;
     }
