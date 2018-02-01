@@ -33,6 +33,7 @@ public class CompetitionManagerApplicationTests {
 
     private Player mockPlayer;
     private Team mockTeam;
+    private Team newMockTeam;
 
     @Autowired
     private MockMvc mvc;
@@ -57,6 +58,10 @@ public class CompetitionManagerApplicationTests {
         mockTeam.setId(1);
         mockTeam.setName("TeamName");
         mockTeam.setYell("TeamYell");
+        
+        Team newMockTeam = new Team();
+        newMockTeam.setName("TeamName");
+        newMockTeam.setYell("TeamYell");
     }
 
     @Test
@@ -111,7 +116,7 @@ public class CompetitionManagerApplicationTests {
     @Test
     public void createTeam() throws Exception {
     	given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
-        mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockTeam))).andExpect(status().isCreated());
+        mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newMockTeam))).andExpect(status().isCreated());
     }
     
     @Test
@@ -123,17 +128,8 @@ public class CompetitionManagerApplicationTests {
     
     @SuppressWarnings("unchecked")
 	@Test
-    public void addPlayerNotFoundToTeam() throws Exception {
-    	given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
-    	given(playerService.getPlayer(Matchers.anyLong())).willThrow(NotFoundException.class);
-        mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
-    }
-    
-    @SuppressWarnings("unchecked")
-	@Test
-    public void addPlayerToTeamNotFound() throws Exception {
-    	given(teamService.getTeam(Matchers.anyLong())).willThrow(NotFoundException.class);
-    	given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
+    public void addPlayerNotFound() throws Exception {
+    	given(teamService.addPlayer(Mockito.anyLong(), Mockito.anyLong())).willThrow(NotFoundException.class);
         mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
     

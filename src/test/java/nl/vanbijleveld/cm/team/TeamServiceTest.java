@@ -110,4 +110,11 @@ public class TeamServiceTest {
     	
     	assertEquals(team.getPlayers().size(), expectedTeamSize);
     }
+    
+    @Test(expected = NotFoundException.class)
+    public void addPlayerTestPLayerNotFound() throws NotFoundException{
+    	when(teamRepo.findOneById(Matchers.anyLong())).thenReturn(mockTeamEnt);
+    	when(playerService.getPlayer(Matchers.anyLong())).thenThrow(new NotFoundException("player not found"));
+    	teamService.addPlayer(1l, 1l);
+    }
 }
