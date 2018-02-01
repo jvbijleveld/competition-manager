@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import javassist.NotFoundException;
 import nl.vanbijleveld.cm.exception.ConflictException;
+import nl.vanbijleveld.cm.team.TeamService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,9 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepo;
 
+    @Autowired
+    private TeamService teamService;
+    
     public Player getPlayer(long id) throws NotFoundException {
         PlayerEnt ent = playerRepo.findOneById(id);
         if (ent == null) {
@@ -32,8 +36,11 @@ public class PlayerService {
         if (existingPlayer != null) {
             throw new ConflictException("Player already exists");
         }
-
-        return PlayerFactory.build(playerRepo.save(PlayerEntWrapper.wrap(newPlayer)));
+        
+        PlayerEnt newPlayerEnt = playerRepo.save(PlayerEntWrapper.wrap(newPlayer));
+        Player createdPlayer = PlayerFactory.build(newPlayerEnt);
+        teamService.createTeam(createdPlayer.getFullName(),"",newPlayerEnt);
+        return createdPlayer;
     }
 
 }

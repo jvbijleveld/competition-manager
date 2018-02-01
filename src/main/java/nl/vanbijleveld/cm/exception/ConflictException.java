@@ -7,7 +7,7 @@ public class ConflictException extends Exception {
     public ConflictException() {
     }
 
-    public ConflictException(final String message) {
+    public ConflictException(final String message) { 
         super(message);
     }
 
@@ -18,4 +18,5 @@ public class ConflictException extends Exception {
     public ConflictException(final Throwable cause) {
         super(cause);
     }
+    
 }

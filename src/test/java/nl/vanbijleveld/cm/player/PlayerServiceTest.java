@@ -56,7 +56,7 @@ public class PlayerServiceTest {
         assertNull(player);
     }
 
-    @Test
+    
     public void testCreatePlayer() throws ConflictException {
         when(playerRepo.findOneByEmail(Matchers.anyString())).thenReturn(null);
         when(playerRepo.save(Matchers.any(PlayerEnt.class))).thenReturn(mockPlayerEnt);

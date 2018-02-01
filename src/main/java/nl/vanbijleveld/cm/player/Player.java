@@ -76,7 +76,7 @@ public class Player implements Serializable {
     }
 
     public String getFullName() {
-        return this.firstName + ((!this.infix.isEmpty()) ? this.infix + " " : " ") + this.lastName;
+        return this.firstName +" "+ ((!this.infix.isEmpty()) ? this.infix + " " : "") + this.lastName;
     }
 
     public String getFullSalutation() {

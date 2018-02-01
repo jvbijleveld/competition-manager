@@ -2,6 +2,7 @@ package nl.vanbijleveld.cm.team;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+import java.util.ArrayList;
 
 import javassist.NotFoundException;
 import nl.vanbijleveld.cm.player.PlayerEnt;
@@ -36,6 +37,12 @@ public class TeamService {
 
         return TeamFactory.build(teamRepo.save(team));
 
+    }
+    
+    public Team createTeam(String name, String yell, PlayerEnt player) {
+        List<PlayerEnt> newList = new ArrayList<PlayerEnt>();
+        newList.add(player);
+        return createTeam(name, yell, newList);
     }
 
 }
