@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import javassist.NotFoundException;
 import nl.vanbijleveld.cm.exception.ConflictException;
+import nl.vanbijleveld.cm.team.Team;
+import nl.vanbijleveld.cm.team.TeamService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,9 +23,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class PlayerServiceTest {
 
     private Player mockPlayer;
+    private Team mockTeam;
 
     @Mock
     private PlayerRepository playerRepo;
+
+    @Mock
+    private TeamService teamService;
 
     @Mock
     private PlayerEnt mockPlayerEnt;
@@ -40,6 +46,10 @@ public class PlayerServiceTest {
         mockPlayerEnt.setLastName("last");
         mockPlayerEnt.setEmail("email");
         mockPlayerEnt.setSex(EnumSex.MALE);
+
+        mockTeam = new Team();
+        mockTeam.setName("TeamName");
+        mockTeam.setYell("Yell");
     }
 
     @Test
@@ -56,10 +66,11 @@ public class PlayerServiceTest {
         assertNull(player);
     }
 
-    
+    @Test
     public void testCreatePlayer() throws ConflictException {
         when(playerRepo.findOneByEmail(Matchers.anyString())).thenReturn(null);
         when(playerRepo.save(Matchers.any(PlayerEnt.class))).thenReturn(mockPlayerEnt);
+        when(teamService.createTeam(Matchers.anyString(), Matchers.anyString(), Matchers.any(PlayerEnt.class))).thenReturn(mockTeam);
         final Player player = playerService.createNewPlayer(mockPlayer);
         assertEquals(mockPlayer.getFirstName(), player.getFirstName());
         assertEquals(mockPlayer.getInfix(), player.getInfix());

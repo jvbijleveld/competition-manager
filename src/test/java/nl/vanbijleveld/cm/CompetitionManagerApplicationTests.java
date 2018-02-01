@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.exception.ConflictException;
 import nl.vanbijleveld.cm.player.EnumSex;
 import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerService;
@@ -83,6 +84,13 @@ public class CompetitionManagerApplicationTests {
     @Test
     public void createNewPlayer() throws Exception {
         mvc.perform(put("/player").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockPlayer))).andExpect(status().isCreated());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void createNewPlayerExpectConflict() throws Exception {
+        given(playerService.createNewPlayer(Mockito.any(Player.class))).willThrow(ConflictException.class);
+        mvc.perform(put("/player").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockPlayer))).andExpect(status().isConflict());
     }
 
     // TEAMS

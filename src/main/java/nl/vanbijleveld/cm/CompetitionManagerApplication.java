@@ -59,12 +59,8 @@ public class CompetitionManagerApplication {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<?> handleConflictException(final ConflictException exception, final HttpServletRequest request) {
         LOGGER.error("Returning HTTP Conflict:" + exception.getMessage());
-        ExceptionResponse response = new ExceptionResponse();
-        response.setStatusCode(HttpStatus.CONFLICT);
-        response.setMessage(exception.getMessage());
-        return new ResponseEntity(response, HttpStatus.CONFLICT);
-        
-        //return exception.getMessage();
+        ExceptionResponse response = new ExceptionResponse(exception, HttpStatus.CONFLICT);
+        return new ResponseEntity<ExceptionResponse>(response, response.getStatusCode());
     }
 
     // Players
@@ -74,7 +70,7 @@ public class CompetitionManagerApplication {
         LOGGER.info("Looking for player " + id);
         return playerService.getPlayer(id);
     }
-    
+
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/player", method = RequestMethod.PUT)
     public void addNewPlayer(@RequestBody Player request) throws ConflictException {
