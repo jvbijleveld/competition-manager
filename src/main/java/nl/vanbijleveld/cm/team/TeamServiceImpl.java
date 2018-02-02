@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.ArrayList;
 
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.api.PlayerService;
+import nl.vanbijleveld.cm.api.TeamService;
 import nl.vanbijleveld.cm.player.Player;
 import nl.vanbijleveld.cm.player.PlayerEnt;
 import nl.vanbijleveld.cm.player.PlayerEntWrapper;
-import nl.vanbijleveld.cm.player.PlayerService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TeamService {
+public class TeamServiceImpl implements TeamService {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired

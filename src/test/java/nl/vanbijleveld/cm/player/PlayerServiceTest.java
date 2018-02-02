@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.api.TeamService;
 import nl.vanbijleveld.cm.exception.ConflictException;
 import nl.vanbijleveld.cm.team.Team;
-import nl.vanbijleveld.cm.team.TeamService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class PlayerServiceTest {
     private PlayerEnt mockPlayerEnt;
 
     @InjectMocks
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Before
     public void setup() {

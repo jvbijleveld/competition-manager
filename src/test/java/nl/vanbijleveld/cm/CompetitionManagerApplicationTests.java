@@ -5,12 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.api.PlayerService;
+import nl.vanbijleveld.cm.api.TeamService;
 import nl.vanbijleveld.cm.exception.ConflictException;
 import nl.vanbijleveld.cm.player.EnumSex;
 import nl.vanbijleveld.cm.player.Player;
-import nl.vanbijleveld.cm.player.PlayerService;
 import nl.vanbijleveld.cm.team.Team;
-import nl.vanbijleveld.cm.team.TeamService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class CompetitionManagerApplicationTests {
 
     private Player mockPlayer;
     private Team mockTeam;
-    private Team newMockTeam;
+    private String newMockTeam;
 
     @Autowired
     private MockMvc mvc;
@@ -58,10 +58,8 @@ public class CompetitionManagerApplicationTests {
         mockTeam.setId(1);
         mockTeam.setName("TeamName");
         mockTeam.setYell("TeamYell");
-        
-        Team newMockTeam = new Team();
-        newMockTeam.setName("TeamName");
-        newMockTeam.setYell("TeamYell");
+
+        newMockTeam = "{\"teamName\":\"teamName\", \"yell\": \"yell\"}";
     }
 
     @Test
@@ -112,26 +110,26 @@ public class CompetitionManagerApplicationTests {
         given(teamService.getTeam(1l)).willThrow(NotFoundException.class);
         mvc.perform(get("/team/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
-    
+
     @Test
     public void createTeam() throws Exception {
-    	given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
-        mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newMockTeam))).andExpect(status().isCreated());
+        given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
+        // mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newMockTeam))).andExpect(status().isCreated());
+        mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(newMockTeam)).andExpect(status().isCreated());
     }
-    
+
     @Test
     public void addPlayerToTeam() throws Exception {
-    	given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
-    	given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
+        given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
+        given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
         mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
     }
-    
+
     @SuppressWarnings("unchecked")
-	@Test
+    @Test
     public void addPlayerNotFound() throws Exception {
-    	given(teamService.addPlayer(Mockito.anyLong(), Mockito.anyLong())).willThrow(NotFoundException.class);
+        given(teamService.addPlayer(Mockito.anyLong(), Mockito.anyLong())).willThrow(NotFoundException.class);
         mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
-    
 
 }

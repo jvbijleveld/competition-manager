@@ -3,8 +3,9 @@ package nl.vanbijleveld.cm.player;
 import java.lang.invoke.MethodHandles;
 
 import javassist.NotFoundException;
+import nl.vanbijleveld.cm.api.PlayerService;
+import nl.vanbijleveld.cm.api.TeamService;
 import nl.vanbijleveld.cm.exception.ConflictException;
-import nl.vanbijleveld.cm.team.TeamService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PlayerService {
+public class PlayerServiceImpl implements PlayerService {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
@@ -20,7 +21,8 @@ public class PlayerService {
 
     @Autowired
     private TeamService teamService;
-    
+
+    @Override
     public Player getPlayer(long id) throws NotFoundException {
         PlayerEnt ent = playerRepo.findOneById(id);
         if (ent == null) {
@@ -30,16 +32,17 @@ public class PlayerService {
         return PlayerFactory.build(ent);
     }
 
+    @Override
     public Player createNewPlayer(Player newPlayer) throws ConflictException {
         PlayerEnt existingPlayer = playerRepo.findOneByEmail(newPlayer.getEmail());
 
         if (existingPlayer != null) {
             throw new ConflictException("Player already exists");
         }
-        
+
         PlayerEnt newPlayerEnt = playerRepo.save(PlayerEntWrapper.wrap(newPlayer));
         Player createdPlayer = PlayerFactory.build(newPlayerEnt);
-        teamService.createTeam(createdPlayer.getFullName(),"",newPlayerEnt);
+        teamService.createTeam(createdPlayer.getFullName(), "", newPlayerEnt);
         return createdPlayer;
     }
 

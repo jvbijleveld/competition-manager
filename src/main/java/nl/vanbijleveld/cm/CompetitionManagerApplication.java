@@ -6,12 +6,12 @@ import javassist.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import nl.vanbijleveld.cm.api.PlayerService;
+import nl.vanbijleveld.cm.api.TeamService;
 import nl.vanbijleveld.cm.exception.ConflictException;
 import nl.vanbijleveld.cm.exception.ExceptionResponse;
 import nl.vanbijleveld.cm.player.Player;
-import nl.vanbijleveld.cm.player.PlayerService;
 import nl.vanbijleveld.cm.team.Team;
-import nl.vanbijleveld.cm.team.TeamService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,21 +84,21 @@ public class CompetitionManagerApplication {
         LOGGER.info("Looking for team " + id);
         return teamService.getTeam(id);
     }
-    
+
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @PutMapping(value = "/team")
-    public Team createTeam(@RequestBody Team request){
-    	LOGGER.info("Creating new Team");
-    	return teamService.createTeam(request.getName(), request.getYell());
+    public Team createTeam(@RequestBody Team request) {
+        LOGGER.info("Creating new Team");
+        return teamService.createTeam(request.getName(), request.getYell());
     }
-    
+
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @PutMapping(value = "/team/{teamId}/addPlayer/{playerId}")
-    public Team addPlayerToTeam(@PathVariable Long teamId, @PathVariable Long playerId) throws NotFoundException{
-    	LOGGER.info("Adding player with id {} to team with id {}", playerId, teamId);
-    	return teamService.addPlayer(teamId, playerId);
+    public Team addPlayerToTeam(@PathVariable Long teamId, @PathVariable Long playerId) throws NotFoundException {
+        LOGGER.info("Adding player with id {} to team with id {}", playerId, teamId);
+        return teamService.addPlayer(teamId, playerId);
     }
 
     public static void main(String[] args) {
