@@ -114,7 +114,6 @@ public class CompetitionManagerApplicationTests {
     @Test
     public void createTeam() throws Exception {
         given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
-        // mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newMockTeam))).andExpect(status().isCreated());
         mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(newMockTeam)).andExpect(status().isCreated());
     }
 
