@@ -59,7 +59,7 @@ public class CompetitionManagerApplicationTests {
         mockTeam.setName("TeamName");
         mockTeam.setYell("TeamYell");
 
-        newMockTeam = "{\"teamName\":\"teamName\", \"yell\": \"yell\"}";
+        newMockTeam = "{\"name\":\"teamName\", \"yell\": \"yell\"}";
     }
 
     @Test
