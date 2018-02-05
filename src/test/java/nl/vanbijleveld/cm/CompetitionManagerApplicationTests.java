@@ -59,7 +59,7 @@ public class CompetitionManagerApplicationTests {
         mockTeam.setName("TeamName");
         mockTeam.setYell("TeamYell");
 
-        newMockTeam = "{\"teamName\":\"teamName\", \"yell\": \"yell\"}";
+        newMockTeam = "{\"name\":\"teamName\", \"yell\": \"yell\"}";
     }
 
     @Test
@@ -114,7 +114,6 @@ public class CompetitionManagerApplicationTests {
     @Test
     public void createTeam() throws Exception {
         given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
-        // mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newMockTeam))).andExpect(status().isCreated());
         mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(newMockTeam)).andExpect(status().isCreated());
     }
 

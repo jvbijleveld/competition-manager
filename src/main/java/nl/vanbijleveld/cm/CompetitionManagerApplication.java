@@ -52,13 +52,13 @@ public class CompetitionManagerApplication extends SpringBootServletInitializer 
     // Default ErrorHandling
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleGeneralException(final NotFoundException exception, final HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        ExceptionResponse response = new ExceptionResponse(exception, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<ExceptionResponse>(response, response.getStatusCode());
     }
 
     @ResponseBody
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<?> handleConflictException(final ConflictException exception, final HttpServletRequest request) {
-        LOGGER.error("Returning HTTP Conflict:" + exception.getMessage());
         ExceptionResponse response = new ExceptionResponse(exception, HttpStatus.CONFLICT);
         return new ResponseEntity<ExceptionResponse>(response, response.getStatusCode());
     }
