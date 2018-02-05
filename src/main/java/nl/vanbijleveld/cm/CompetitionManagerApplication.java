@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PropertySource({"classpath:env.properties"})
 @RestController
 @SpringBootApplication
-public class CompetitionManagerApplication {
+public class CompetitionManagerApplication extends SpringBootServletInitializer {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
@@ -99,6 +101,10 @@ public class CompetitionManagerApplication {
     public Team addPlayerToTeam(@PathVariable Long teamId, @PathVariable Long playerId) throws NotFoundException {
         LOGGER.info("Adding player with id {} to team with id {}", playerId, teamId);
         return teamService.addPlayer(teamId, playerId);
+    }
+
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(CompetitionManagerApplication.class);
     }
 
     public static void main(String[] args) {
