@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -68,11 +69,12 @@ public class CompetitionManagerApplicationTests {
 
     @Test
     public void testRootContext() throws Exception {
-        mvc.perform(get("/").contentType(MediaType.TEXT_HTML)).andExpect(status().isOk());
+        mvc.perform(get("/").contentType(MediaType.TEXT_HTML)).andExpect(status().is4xxClientError());
     }
 
     // PLAYERS
     @Test
+    @WithMockUser(username = "user")
     public void findPlayer_returnJson() throws Exception {
         given(playerService.getPlayer(Mockito.anyLong())).willReturn(mockPlayer);
         mvc.perform(get("/player/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -80,18 +82,21 @@ public class CompetitionManagerApplicationTests {
 
     @SuppressWarnings("unchecked")
     @Test
+    @WithMockUser(username = "user")
     public void findPlayer_returnNotFound() throws Exception {
         given(playerService.getPlayer(Mockito.anyLong())).willThrow(NotFoundException.class);
         mvc.perform(get("/player/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser(username = "user")
     public void createNewPlayer() throws Exception {
         mvc.perform(put("/player").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockPlayer))).andExpect(status().isCreated());
     }
 
     @SuppressWarnings("unchecked")
     @Test
+    @WithMockUser(username = "user")
     public void createNewPlayerExpectConflict() throws Exception {
         given(playerService.createNewPlayer(Mockito.any(Player.class))).willThrow(ConflictException.class);
         mvc.perform(put("/player").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockPlayer))).andExpect(status().isConflict());
@@ -99,6 +104,7 @@ public class CompetitionManagerApplicationTests {
 
     // TEAMS
     @Test
+    @WithMockUser(username = "user")
     public void findTeam_returnJson() throws Exception {
         given(teamService.getTeam(1l)).willReturn(mockTeam);
         mvc.perform(get("/team/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -106,18 +112,21 @@ public class CompetitionManagerApplicationTests {
 
     @SuppressWarnings("unchecked")
     @Test
+    @WithMockUser(username = "user")
     public void findTeam_returnNotFound() throws Exception {
         given(teamService.getTeam(1l)).willThrow(NotFoundException.class);
         mvc.perform(get("/team/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser(username = "user")
     public void createTeam() throws Exception {
         given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
         mvc.perform(put("/team").contentType(MediaType.APPLICATION_JSON).content(newMockTeam)).andExpect(status().isCreated());
     }
 
     @Test
+    @WithMockUser(username = "user")
     public void addPlayerToTeam() throws Exception {
         given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
         given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
@@ -126,6 +135,7 @@ public class CompetitionManagerApplicationTests {
 
     @SuppressWarnings("unchecked")
     @Test
+    @WithMockUser(username = "user")
     public void addPlayerNotFound() throws Exception {
         given(teamService.addPlayer(Mockito.anyLong(), Mockito.anyLong())).willThrow(NotFoundException.class);
         mvc.perform(put("/team/1/addPlayer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());

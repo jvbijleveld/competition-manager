@@ -23,7 +23,7 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
-    @OneToMany(mappedBy = "email", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Role> role;
 
     public String getEmail() {
