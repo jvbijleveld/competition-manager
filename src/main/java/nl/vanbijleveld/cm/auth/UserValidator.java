@@ -25,15 +25,15 @@ public class UserValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         if (user.getEmail().length() < 5 || user.getEmail().length() > 257) {
-            errors.rejectValue("username", "Size.userForm.username");
+            errors.rejectValue("username", "Username cannot be empty");
         }
         if (userService.findByUsername(user.getEmail()) != null) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+            errors.rejectValue("username", "Username already in use");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "Size.userForm.password");
+            errors.rejectValue("password", "Password not accepted");
         }
 
     }

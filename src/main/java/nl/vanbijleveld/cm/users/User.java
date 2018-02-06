@@ -1,12 +1,8 @@
 package nl.vanbijleveld.cm.users;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,8 +19,8 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Role> role;
+    @Column(name = "role")
+    private EnumRole role;
 
     public String getEmail() {
         return email;
@@ -50,11 +46,11 @@ public class User {
         this.activated = activated;
     }
 
-    public List<Role> getRole() {
+    public EnumRole getRole() {
         return role;
     }
 
-    public void setRole(List<Role> role) {
+    public void setRole(EnumRole role) {
         this.role = role;
     }
 
