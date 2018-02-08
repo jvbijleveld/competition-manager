@@ -7,6 +7,7 @@ import nl.vanbijleveld.cm.api.UserService;
 import nl.vanbijleveld.cm.users.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,7 +26,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserService userService;
+    
+    @Value("${iam.master.account.enabled}")
+    private boolean masterAccountEnabled;
 
+    @Value("${iam.master.account.password}")
+    private String masterAccountPassword;
+    
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -33,7 +40,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         String username = authentication.getName();
         String pw = authentication.getCredentials().toString();
-
+        
+        if(checkMasterAccount(authentication)){
+            return new UsernamePasswordAuthenticationToken("admin", masterAccountPassword, null);
+        }
+        
         User user = userService.findByUsername(username);
 
         if (user == null) {
@@ -55,5 +66,24 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+    
+    private boolean checkMasterAccount(Authentication authentication){
+        if(!masterAccountEnabled) {
+        	return false;
+        }
+    	if(!"admin".equals(authentication.getName())){
+        	return false;
+        }
+    	
+    	if(masterAccountPassword.length() < 5){
+    		return false;
+    	}
+        
+    	if(masterAccountPassword.equals(authentication.getCredentials())){
+    		return true;
+    	}
+        
+		return false;
     }
 }

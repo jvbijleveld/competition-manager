@@ -45,7 +45,7 @@ public class UserController {
         }
         userService.save(user);
         
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
 }

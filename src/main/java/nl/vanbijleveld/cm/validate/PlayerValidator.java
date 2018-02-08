@@ -1,13 +1,13 @@
 package nl.vanbijleveld.cm.validate;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import nl.vanbijleveld.cm.player.Player;
 
-
-
+@Component
 public class PlayerValidator implements Validator {
 
 	@Override

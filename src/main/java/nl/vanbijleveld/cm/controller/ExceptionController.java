@@ -1,17 +1,16 @@
 package nl.vanbijleveld.cm.controller;
 
-import javassist.NotFoundException;
-
 import javax.servlet.http.HttpServletRequest;
-
-import nl.vanbijleveld.cm.exception.ConflictException;
-import nl.vanbijleveld.cm.exception.ExceptionResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javassist.NotFoundException;
+import nl.vanbijleveld.cm.exception.ConflictException;
+import nl.vanbijleveld.cm.exception.ExceptionResponse;
 
 @RestController
 public class ExceptionController {
@@ -21,7 +20,7 @@ public class ExceptionController {
         ExceptionResponse response = new ExceptionResponse(exception, HttpStatus.SERVICE_UNAVAILABLE);
         return new ResponseEntity<ExceptionResponse>(response, response.getStatusCode());
     }
-
+    
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(final NotFoundException exception, final HttpServletRequest request) {
         ExceptionResponse response = new ExceptionResponse(exception, HttpStatus.NOT_FOUND);

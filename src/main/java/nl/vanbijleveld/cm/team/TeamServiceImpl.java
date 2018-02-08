@@ -74,5 +74,17 @@ public class TeamServiceImpl implements TeamService {
         
         return team;
     }
+
+	@Override
+	public List<Team> listTeams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Team> getAllTeamsByPlayer(long playerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
    
 }
