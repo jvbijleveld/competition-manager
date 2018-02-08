@@ -17,9 +17,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Component;
 
 
 @EnableWebSecurity
+@Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
@@ -29,6 +31,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
        // return new UsernamePasswordAuthenticationToken("email", "pw");
+       
+        //UserServiceImpl userService = new UserServiceImpl();
       
         String username = authentication.getName();
         String pw = authentication.getCredentials().toString();
