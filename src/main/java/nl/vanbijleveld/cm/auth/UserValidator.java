@@ -1,7 +1,7 @@
 package nl.vanbijleveld.cm.auth;
 
+import nl.vanbijleveld.cm.api.UserService;
 import nl.vanbijleveld.cm.users.User;
-import nl.vanbijleveld.cm.users.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

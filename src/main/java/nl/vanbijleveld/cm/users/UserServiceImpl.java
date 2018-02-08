@@ -1,5 +1,7 @@
 package nl.vanbijleveld.cm.users;
 
+import nl.vanbijleveld.cm.api.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    // @Autowired
+    // private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -18,12 +20,13 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepository.save(user);
+        // userRepository.save(user);
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findOneByEmail(username);
+        return null;
+        // return userRepository.findOneByEmail(username);
     }
 
 }

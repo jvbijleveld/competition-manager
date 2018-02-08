@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = {"nl.vanbijleveld.cm"})
+@ComponentScan(basePackages = {"nl.vanbijleveld.cm.users"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

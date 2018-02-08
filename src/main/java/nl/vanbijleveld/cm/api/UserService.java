@@ -1,4 +1,6 @@
-package nl.vanbijleveld.cm.users;
+package nl.vanbijleveld.cm.api;
+
+import nl.vanbijleveld.cm.users.User;
 
 public interface UserService {
 
