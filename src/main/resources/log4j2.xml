@@ -19,7 +19,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="org.springframework.web" level="error" additivity="false">
+        <Logger name="org.springframework.web" level="info" additivity="false">
             <AppenderRef ref="File-Appender" />
             <AppenderRef ref="Console-Appender" />
         </Logger>

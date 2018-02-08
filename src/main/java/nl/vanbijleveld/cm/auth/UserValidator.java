@@ -23,16 +23,16 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
         if (user.getEmail().length() < 5 || user.getEmail().length() > 257) {
-            errors.rejectValue("username", "Username cannot be empty");
+            errors.rejectValue("email", "Username cannot be empty");
         }
         if (userService.findByUsername(user.getEmail()) != null) {
-            errors.rejectValue("username", "Username already in use");
+            errors.rejectValue("email", "Username already in use");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+        if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Password not accepted");
         }
 

@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import nl.vanbijleveld.cm.auth.UserValidator;
 import nl.vanbijleveld.cm.users.User;
+import nl.vanbijleveld.cm.users.UserService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
@@ -27,18 +28,23 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+    
+    @Autowired
+    private UserService userService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(userValidator);
     }
 
-    @PutMapping(value = CONTEXT_ROOT)
+    @PostMapping(value = CONTEXT_ROOT)
     public ResponseEntity<?> saveUser(@ModelAttribute("user") @Validated User user, BindingResult result, Model model) {
         LOGGER.info("Creating new User {}", user.getEmail());
         if (result.hasErrors()) {
             return new ResponseEntity<>(result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
+        userService.save(user);
+        
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 

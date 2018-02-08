@@ -6,12 +6,12 @@
     </head>
     <body>
         
-        <form action="/login" method="post">
+        <form action="/user" method="post">
             <div><label> User Name : <input type="text" name="email"/> </label></div>
             <div><label> Password: <input type="password" name="password"/> </label></div>
             
             <input type="hidden" name="activated" value="true"/>
-            <input type="hidden" name="role" value=1/>
+            <input type="hidden" name="role" value="COACH" />
             <div><input type="submit" value="Sign In"/></div>
             <input type="hidden" name="${_csrf.parameterName}"
                 value="${_csrf.token}" />
