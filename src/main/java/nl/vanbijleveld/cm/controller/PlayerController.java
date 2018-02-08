@@ -6,12 +6,18 @@ import javassist.NotFoundException;
 import nl.vanbijleveld.cm.api.PlayerService;
 import nl.vanbijleveld.cm.exception.ConflictException;
 import nl.vanbijleveld.cm.player.Player;
+import nl.vanbijleveld.cm.validate.PlayerValidator;
+import nl.vanbijleveld.cm.validate.UserValidator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +30,18 @@ public class PlayerController {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     static final String CONTEXT_ROOT = "/player";
+    
+    @Autowired
+    private PlayerValidator playerValidator;
 
     @Autowired
     private PlayerService playerService;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(playerValidator);
+    }
+
 
     @ResponseBody
     @GetMapping(value = CONTEXT_ROOT + "/{id}")
@@ -38,9 +53,9 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @PutMapping(value = CONTEXT_ROOT)
-    public Player addNewPlayer(@RequestBody Player request) throws ConflictException {
+    public Player addNewPlayer(@ModelAttribute("player") @Validated Player player) throws ConflictException {
         LOGGER.info("Creating new Player");
-        return playerService.createNewPlayer(request);
+        return playerService.createNewPlayer(player);
     }
 
 }

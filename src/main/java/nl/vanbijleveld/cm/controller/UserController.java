@@ -3,8 +3,8 @@ package nl.vanbijleveld.cm.controller;
 import java.lang.invoke.MethodHandles;
 
 import nl.vanbijleveld.cm.api.UserService;
-import nl.vanbijleveld.cm.auth.UserValidator;
 import nl.vanbijleveld.cm.users.User;
+import nl.vanbijleveld.cm.validate.UserValidator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

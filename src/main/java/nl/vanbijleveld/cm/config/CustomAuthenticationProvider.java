@@ -31,8 +31,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         // return new UsernamePasswordAuthenticationToken("email", "pw");
 
-        // UserServiceImpl userService = new UserServiceImpl();
-
         String username = authentication.getName();
         String pw = authentication.getCredentials().toString();
 

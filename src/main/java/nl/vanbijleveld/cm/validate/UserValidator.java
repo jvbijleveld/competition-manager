@@ -1,4 +1,4 @@
-package nl.vanbijleveld.cm.auth;
+package nl.vanbijleveld.cm.validate;
 
 import nl.vanbijleveld.cm.api.UserService;
 import nl.vanbijleveld.cm.users.User;

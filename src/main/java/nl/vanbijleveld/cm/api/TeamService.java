@@ -9,6 +9,10 @@ import nl.vanbijleveld.cm.team.Team;
 public interface TeamService {
 
     Team getTeam(long id) throws NotFoundException;
+    
+    List<Team> listTeams();
+    
+    List<Team> getAllTeamsByPlayer(long playerId);
 
     Team addPlayer(long teamId, long playerId) throws NotFoundException;
 

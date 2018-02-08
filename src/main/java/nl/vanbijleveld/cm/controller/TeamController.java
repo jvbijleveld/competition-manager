@@ -2,21 +2,25 @@ package nl.vanbijleveld.cm.controller;
 
 import java.lang.invoke.MethodHandles;
 
-import javassist.NotFoundException;
-import nl.vanbijleveld.cm.api.TeamService;
-import nl.vanbijleveld.cm.team.Team;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javassist.NotFoundException;
+import nl.vanbijleveld.cm.api.TeamService;
+import nl.vanbijleveld.cm.team.Team;
+import nl.vanbijleveld.cm.validate.TeamValidator;
 
 @RestController
 public class TeamController {
@@ -26,7 +30,15 @@ public class TeamController {
 
     @Autowired
     TeamService teamService;
-
+    
+    @Autowired
+    TeamValidator teamValidator;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(teamValidator);
+    }
+    
     @ResponseBody
     @GetMapping(value = CONTEXT_ROOT + "/{id}")
     public Team showTeam(@PathVariable long id) throws NotFoundException {
@@ -37,9 +49,9 @@ public class TeamController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     @PutMapping(value = CONTEXT_ROOT)
-    public Team createTeam(@RequestBody Team request) {
+    public Team createTeam(@ModelAttribute("team") @Validated Team team) {
         LOGGER.info("Creating new Team");
-        return teamService.createTeam(request.getName(), request.getYell());
+        return teamService.createTeam(team.getName(), team.getYell());
     }
 
     @ResponseStatus(HttpStatus.CREATED)

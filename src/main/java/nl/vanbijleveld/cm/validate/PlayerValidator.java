@@ -1,0 +1,32 @@
+package nl.vanbijleveld.cm.validate;
+
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
+import nl.vanbijleveld.cm.player.Player;
+
+
+
+public class PlayerValidator implements Validator {
+
+	@Override
+	public boolean supports(Class<?> aClass) {
+		return Player.class.equals(aClass);
+	}
+
+	@Override
+	public void validate(Object object, Errors errors) {
+		Player p = (Player) object;
+		
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
+        
+        if(p.getEmail().length() < 5){
+        	errors.rejectValue("email", "invalid emailadres");
+        }
+ 
+	}
+	
+}
