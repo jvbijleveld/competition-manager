@@ -18,5 +18,11 @@ public class WebsiteController {
         model.addAttribute("title", "Competition Manager!");
         return "login";
     }
+    
+    @RequestMapping(value = "/register")
+    public String registerPage(Model model) {
+        model.addAttribute("title", "Competition Manager!");
+        return "register";
+    }
 
 }
