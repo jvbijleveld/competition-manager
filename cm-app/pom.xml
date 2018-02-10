@@ -20,7 +20,7 @@
         <version>1.6</version>
         <configuration>
           <nodeVersion>v8.9.0</nodeVersion>
-          <yarnVersion>v1.3.2</yarnVersion>
+          <npmVersion>5.5.1</npmVersion>
         </configuration>
         <executions>
           <execution>

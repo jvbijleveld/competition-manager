@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --disable-host-check",
+    "start": "ng serve --disable-host-check --proxy-config proxy.conf.json",
     "build": "ng build --prod --output-path dist/META-INF/resources",
     "test": "ng test",
     "lint": "ng lint",

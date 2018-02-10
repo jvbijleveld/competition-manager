@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan
 public class MvcConfig extends WebMvcConfigurerAdapter {
    
-   /*
+  
     @Bean
     public ViewResolver getViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -23,7 +23,5 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         resolver.setViewClass(JstlView.class);
         return resolver;
     }
-    
-    */
 
 }
