@@ -28,7 +28,7 @@ public class CompetitionManagerApplicationTests {
 
     @Test
     public void testRootContext() throws Exception {
-        mvc.perform(get("/").contentType(MediaType.TEXT_HTML)).andExpect(status().is4xxClientError());
+        mvc.perform(get("/").contentType(MediaType.TEXT_HTML)).andExpect(status().isOk());
     }
 
 }

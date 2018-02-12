@@ -33,6 +33,17 @@
         <!-- Exclude Spring Boot's Default Logging -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
@@ -125,29 +136,38 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+               <directory>app</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-<plugin>
-<artifactId>maven-resources-plugin</artifactId>
-<executions>
-      <execution>
-          <id>copy-resources</id>
-          <phase>validate</phase>
-          <goals><goal>copy-resources</goal></goals>
-          <configuration>
-              <outputDirectory>${basedir}/target/classes/</outputDirectory >
-              <resources>
-                  <resource>
-                      <directory>${basedir}/../cm-app/dist</directory >
-                  </resource>
-              </resources>
-          </configuration>
-      </execution>
-</executions>
-</plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                      <execution>
+                          <id>copy-resources</id>
+                          <phase>validate</phase>
+                          <goals><goal>copy-resources</goal></goals>
+                          <configuration>
+                              <outputDirectory>${basedir}/target/classes/</outputDirectory >
+                              <resources>
+                                  <resource>
+                                      <directory>${basedir}/../cm-app/dist</directory >
+                                  </resource>
+                              </resources>
+                          </configuration>
+                      </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
