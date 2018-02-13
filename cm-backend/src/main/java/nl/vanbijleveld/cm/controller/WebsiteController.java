@@ -7,20 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class WebsiteController {
 
-/*
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/info")
     public String homePage(Model model) {
         model.addAttribute("title", "Competition Manager!");
         return "home";
     }
-*/
 
     @RequestMapping(value = "/login")
     public String loginPage(Model model) {
         model.addAttribute("title", "Competition Manager!");
         return "login";
     }
-    
+
     @RequestMapping(value = "/register")
     public String registerPage(Model model) {
         model.addAttribute("title", "Competition Manager!");
