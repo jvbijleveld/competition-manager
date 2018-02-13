@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/home", "/images/**").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
+        http.authorizeRequests().antMatchers("/","/resources/**", "/home", "/images/**").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
         .permitAll();
 
         // http.csrf().requireCsrfProtectionMatcher(new
