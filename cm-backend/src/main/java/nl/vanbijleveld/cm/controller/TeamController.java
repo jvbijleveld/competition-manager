@@ -1,6 +1,12 @@
 package nl.vanbijleveld.cm.controller;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
+
+import javassist.NotFoundException;
+import nl.vanbijleveld.cm.api.TeamService;
+import nl.vanbijleveld.cm.team.Team;
+import nl.vanbijleveld.cm.validate.TeamValidator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,11 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javassist.NotFoundException;
-import nl.vanbijleveld.cm.api.TeamService;
-import nl.vanbijleveld.cm.team.Team;
-import nl.vanbijleveld.cm.validate.TeamValidator;
-
 @RestController
 public class TeamController {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
@@ -30,29 +31,28 @@ public class TeamController {
 
     @Autowired
     TeamService teamService;
-    
+
     @Autowired
     TeamValidator teamValidator;
-    
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(teamValidator);
     }
-    
+
     @ResponseBody
     @GetMapping(value = CONTEXT_ROOT + "/{id}")
     public Team showTeam(@PathVariable long id) throws NotFoundException {
         LOGGER.info("Looking for team " + id);
         return teamService.getTeam(id);
     }
-    
-     @ResponseBody
+
+    @ResponseBody
     @GetMapping(value = CONTEXT_ROOT + "/all")
-    public Team getAllTeams() {
-        LOGGER.info("Fetching all teams ");
+    public List<Team> getAllTeams() {
+        LOGGER.info("Fetching all teams");
         return teamService.listTeams();
     }
-    
 
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
