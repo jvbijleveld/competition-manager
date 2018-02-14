@@ -45,6 +45,14 @@ public class TeamController {
         LOGGER.info("Looking for team " + id);
         return teamService.getTeam(id);
     }
+    
+     @ResponseBody
+    @GetMapping(value = CONTEXT_ROOT + "/all")
+    public Team getAllTeams() {
+        LOGGER.info("Fetching all teams ");
+        return teamService.listTeams();
+    }
+    
 
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

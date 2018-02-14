@@ -1,6 +1,8 @@
 package nl.vanbijleveld.cm.team;
 
 import nl.vanbijleveld.cm.player.PlayerFactory;
+import java.util.List;
+import java.util.ArrayList;
 
 public class TeamFactory {
 
@@ -16,5 +18,13 @@ public class TeamFactory {
             }
         }
         return team;
+    }
+    
+    public static List<Team> build(List<TeamEnt> list){
+        List<Team> teamList = new ArrayList();
+        for(TeamEnt teamEnt : list){
+            teamList.add(this.build(teamEnt));
+        }
+        return teamList;
     }
 }

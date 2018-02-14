@@ -75,10 +75,8 @@ public class TeamServiceImpl implements TeamService {
         return team;
     }
 
-	@Override
 	public List<Team> listTeams() {
-		// TODO Auto-generated method stub
-		return null;
+		 return TeamFactory.build(teamRepo.findAll());
 	}
 
 	@Override
