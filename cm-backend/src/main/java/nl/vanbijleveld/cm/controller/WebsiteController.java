@@ -9,8 +9,9 @@ public class WebsiteController {
 
     @RequestMapping(value = "/info")
     public String homePage(Model model) {
-        model.addAttribute("title", "Competition Manager!");
-        return "home";
+        model.addAttribute("appName", "Competition Manager");
+
+        return "info";
     }
 
     @RequestMapping(value = "/login")
