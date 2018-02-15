@@ -53,6 +53,13 @@ public class TeamController {
         LOGGER.info("Fetching all teams");
         return teamService.listTeams();
     }
+    
+    @ResponseBody
+    @GetMapping(value = CONTEXT_ROOT + "/byplayer/{id}")
+    public List<Team> getAllTeams(@PathVariable long id) {
+        LOGGER.info("Fetching all teams with player " + id);
+        return teamService.getAllTeamsByPlayer(id);
+    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

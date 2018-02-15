@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class WebsiteController {
 
-    @RequestMapping(value = "/info")
-    public String homePage(Model model) {
+    @RequestMapping(value = "/csrf")
+    public String infoPage(Model model) {
         model.addAttribute("appName", "Competition Manager");
-
-        return "info";
+        model.addAttribute("appVersion", "0.0.1-SNAPSHOT");
+        return "csrf";
     }
 
     @RequestMapping(value = "/login")
