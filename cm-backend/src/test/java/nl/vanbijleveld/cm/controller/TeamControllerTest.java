@@ -76,7 +76,7 @@ public class TeamControllerTest {
     @WithMockUser(username = "admin")
     public void findTeam_returnJson() throws Exception {
         given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
-        mvc.perform(get("/team/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mvc.perform(get("/teams/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     /*
@@ -93,7 +93,7 @@ public class TeamControllerTest {
     @WithMockUser(username = "admin")
     public void createTeam() throws Exception {
         given(teamService.createTeam(Matchers.anyString(), Matchers.anyString())).willReturn(mockTeam);
-        mvc.perform(put("/team").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockTeam))).andExpect(status().isCreated());
+        mvc.perform(put("/teams").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(mockTeam))).andExpect(status().isCreated());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class TeamControllerTest {
     public void addPlayerToTeam() throws Exception {
         given(teamService.getTeam(Matchers.anyLong())).willReturn(mockTeam);
         given(playerService.getPlayer(Matchers.anyLong())).willReturn(mockPlayer);
-        mvc.perform(put("/team/1/addPlayer/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+        mvc.perform(put("/teams/1/addPlayer/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
     }
 
     /*

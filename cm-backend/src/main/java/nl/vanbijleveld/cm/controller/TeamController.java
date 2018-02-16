@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamController {
     private static final Logger LOGGER = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    static final String CONTEXT_ROOT = "/team";
+    static final String CONTEXT_ROOT = "/teams";
 
     @Autowired
     TeamService teamService;
@@ -48,7 +48,7 @@ public class TeamController {
     }
 
     @ResponseBody
-    @GetMapping(value = CONTEXT_ROOT + "/all")
+    @GetMapping(value = CONTEXT_ROOT)
     public List<Team> getAllTeams() {
         LOGGER.info("Fetching all teams");
         return teamService.listTeams();
