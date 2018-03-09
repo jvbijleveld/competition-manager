@@ -1,6 +1,7 @@
 package nl.vanbijleveld.cm.controller;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 import javassist.NotFoundException;
 import nl.vanbijleveld.cm.api.PlayerService;
@@ -45,6 +46,12 @@ public class PlayerController {
     public Player showPlayer(@PathVariable long id) throws NotFoundException {
         LOGGER.info("Looking for player " + id);
         return playerService.getPlayer(id);
+    }
+    
+    @ResponseBody
+    @GetMapping(value = CONTEXT_ROOT)
+    public List<Player> showAllPlayers(){
+        return playerService.listPLayers();
     }
 
     @ResponseStatus(HttpStatus.CREATED)

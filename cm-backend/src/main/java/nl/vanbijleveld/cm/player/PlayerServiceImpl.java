@@ -1,6 +1,8 @@
 package nl.vanbijleveld.cm.player;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 import javassist.NotFoundException;
 import nl.vanbijleveld.cm.api.PlayerService;
@@ -22,6 +24,11 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private TeamService teamService;
 
+    @Override
+    public List<Player> listPLayers(){
+        return PlayerFactory.build(playerRepo.findAll());
+    }
+        
     @Override
     public Player getPlayer(long id) throws NotFoundException {
         PlayerEnt ent = playerRepo.findOneById(id);

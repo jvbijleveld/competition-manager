@@ -58,8 +58,8 @@ public class PlayerTests {
 
     @Test
     public void testPlayerFactory() {
-        listPlayers = PlayerFactory.build(listEnts);
-        mockPlayer = listPlayers.get(0);
+        //listPlayers = PlayerFactory.build(listEnts);
+        mockPlayer = PlayerFactory.build(listEnts.get(0));
 
         assertEquals(mockPlayer.getFirstName(), mockPlayerEnt.getFirstName());
         assertEquals(mockPlayer.getInfix(), mockPlayerEnt.getInfix());

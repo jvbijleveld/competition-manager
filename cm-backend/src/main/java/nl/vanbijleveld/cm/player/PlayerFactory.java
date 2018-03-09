@@ -11,7 +11,7 @@ public class PlayerFactory {
         return newPlayer;
     }
 
-    public static List<Player> build(List<PlayerEnt> players) {
+    public static List<Player> build(Iterable<PlayerEnt> players) {
         List<Player> list = new ArrayList<Player>();
 
         for (PlayerEnt player : players) {

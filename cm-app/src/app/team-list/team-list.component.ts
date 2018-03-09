@@ -4,11 +4,11 @@ import { Team } from '../team';
 import { TeamService } from '../team.service';
 
 @Component({
-  selector: 'app-teams',
-  templateUrl: './teams.component.html',
-  styleUrls: ['./teams.component.css']
+  selector: 'app-team-list',
+  templateUrl: './team-list.component.html',
+  styleUrls: ['./team-list.component.css']
 })
-export class TeamsComponent implements OnInit {
+export class TeamListComponent implements OnInit {
 
   teams: Team [];
   

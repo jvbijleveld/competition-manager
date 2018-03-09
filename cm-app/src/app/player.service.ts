@@ -5,23 +5,23 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {Team} from './team';
+import {Player} from './player';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable()
-export class TeamService {
-    
-    private teamUrl = 'teams';    
+export class PlayerService {
+
+  private playerUrl = 'player';    
 
     constructor(private http: HttpClient) { }
     
-    getTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>(this.teamUrl)
+    getPlayers(): Observable<Player[]> {
+    return this.http.get<Player[]>(this.playerUrl)
     .pipe(
-        catchError(this.handleError('getTeams', []))
+        catchError(this.handleError('getPlayers', []))
     );
   }
   

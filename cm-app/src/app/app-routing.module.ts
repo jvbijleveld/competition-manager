@@ -1,14 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { TeamsComponent } from './teams/teams.component';
+import { TeamListComponent } from './team-list/team-list.component';
+import { PlayerComponent } from './player/player.component';
 
-const routes: Routes = [
-  { path: 'teams', component: TeamsComponent }  
+const appRoutes: Routes = [
+  {
+    path: 'teams',
+    component: TeamListComponent,
+    data: { title: 'Teams' }
+  },
+  { path: 'players',
+    component: PlayerComponent,
+    pathMatch: 'full'
+  },
+  { path: '**', 
+    redirectTo: '/',
+    pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
+  imports: [ RouterModule.forRoot(appRoutes) ],
   exports: [ RouterModule ]
 })
 
