@@ -1,0 +1,11 @@
+<div class="detailContainer">
+  <h3>{{team.name}}</h3>
+  <p>{{team.yell}}</p>
+  
+  <ul>
+    <li *ngFor="let player of team.players">
+            {{player.firstName}} {{player.infix}} {{player.lastName}}
+    </li>
+</ul>
+  
+</div>

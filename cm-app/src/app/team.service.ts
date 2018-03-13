@@ -19,17 +19,23 @@ export class TeamService {
     constructor(private http: HttpClient) { }
     
     getTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>(this.teamUrl)
-    .pipe(
-        catchError(this.handleError('getTeams', []))
-    );
-  }
+      return this.http.get<Team[]>(this.teamUrl)
+      .pipe(
+          catchError(this.handleError('getTeams', []))
+      );
+    }
+    
+    getTeamDetails(id: number): Observable<any> {
+      const url = `teams/${id}`;
+      return this.http.get<Team>(url).pipe(catchError(this.handleError('getTeamDetails', [])));
+    }
+    
   
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(error); 
-      return of(result as T);
-    };
-  }
+    private handleError<T> (operation = 'operation', result?: T) {
+      return (error: any): Observable<T> => {
+        console.error(error); 
+        return of(result as T);
+      };
+    }
 
 }

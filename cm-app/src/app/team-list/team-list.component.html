@@ -1,6 +1,5 @@
-LIST
 <ul>
     <li *ngFor="let team of teams">
-            {{team.name}}
+         <a routerLink="{{team.id}}">{{team.name}}</a>
     </li>
 </ul>

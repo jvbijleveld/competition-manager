@@ -15,6 +15,7 @@ import { PlayerService } from './player.service';
 
 import { AppRoutingModule }     from './app-routing.module';
 import { MenuComponent } from './menu/menu.component';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
 
 //import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule } from '@angular/material';
 
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     AppComponent,
     MenuComponent,
     PlayerComponent,
-    TeamListComponent
+    TeamListComponent,
+    TeamDetailComponent
   ],
   imports: [
     BrowserModule,
